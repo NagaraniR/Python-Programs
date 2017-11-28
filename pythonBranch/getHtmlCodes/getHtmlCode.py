@@ -7,7 +7,6 @@ class htmlTags:
     def check_file(self,htmlCodes):
         issuccess=True
         datas=""
-
         if htmlCodes.endswith('.html'):
             txt=open(htmlCodes,'r')
             datas=txt.read()
