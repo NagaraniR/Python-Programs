@@ -1,0 +1,74 @@
+CREATE DATABASE testdb;
+
+use testdb;
+
+create table TrainDetails(DepatureTime TIME,DepatureStation varchar(20) NOT NULL,ArrivalTime TIME,ArrivalStation varchar(20) NOT NULL);
+
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("08:05:00","kodambakkam","08:10:00","mambalam");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("08:15:00","mambalam","08:20:00","guindy"); 
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("08:15:00","mambalam","08:25:00","mount");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("08:15:00","kodambakkam","08:20:00","mount");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("08:15:00","kodambakkam","08:30:00","mount");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("08:15:00","mambalam","08:30:00","mount");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("08:30:00","mambalam","08:35:00","mount");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation) 
+ values("08:35:00","mambalam","08:40:00","mount");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("09:49:00","Hamburg","10:06:00","Frankfurt");
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("13:25:00","Hamburg","15:50:00","Darmstadt"); 
+insert into TrainDetails(DepatureTime,DepatureStation,ArrivalTime,ArrivalStation)
+ values("12:05:00","Frankfurt","14:11:00","Darmstadt");
+ 
+
+create table Cities(city varchar(20));
+
+insert into Cities(city) values("Darmstadt");
+insert into Cities(city) values("Frankfurt");
+insert into Cities(city) values("guindy");
+insert into Cities(city) values("Hamburg");
+insert into Cities(city) values("kodambakkam");
+insert into Cities(city) values("mambalam");
+insert into Cities(city) values("mount");
+insert into Cities(city) values("saidapet");
+
+select * from TrainDetails;
+
++--------------+-----------------+-------------+----------------+
+| DepatureTime | DepatureStation | ArrivalTime | ArrivalStation |
++--------------+-----------------+-------------+----------------+
+| 08:05:00     | kodambakkam     | 08:10:00    | mambalam       |
+| 08:15:00     | mambalam        | 08:20:00    | guindy         |
+| 08:15:00     | mambalam        | 08:25:00    | mount          |
+| 08:15:00     | kodambakkam     | 08:20:00    | mount          |
+| 08:15:00     | kodambakkam     | 08:30:00    | mount          |
+| 08:15:00     | mambalam        | 08:30:00    | mount          |
+| 08:30:00     | mambalam        | 08:35:00    | mount          |
+| 08:35:00     | mambalam        | 08:40:00    | mount          |
+| 09:49:00     | Hamburg         | 10:06:00    | Frankfurt      |
+| 13:25:00     | Hamburg         | 15:50:00    | Darmstadt      |
+| 12:05:00     | Frankfurt       | 14:11:00    | Darmstadt      |
++--------------+-----------------+-------------+----------------+
+
+select * from Cities;
+
++-------------+
+| City        |
++-------------+
+| Darmstadt   |
+| Frankfurt   |
+| guindy      |
+| Hamburg     |
+| kodambakkam |
+| mambalam    |
+| mount       |
+| saidapet    |
++-------------+
+
