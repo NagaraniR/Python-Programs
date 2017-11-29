@@ -37,8 +37,6 @@ class Railroads:
                     jumpBoardings.append(self.bordinsDetails[i])
                     jumpDestinations.append(self.arrivalDetails[i])
                     break
-        self.b=boardingStations
-        self.a=arrivalStations
         return boardingStations,arrivalStations,jumpBoardings,jumpDestinations
         
     def jump_train(self,jumpBoardings,jumpDestinations):
