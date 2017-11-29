@@ -92,7 +92,7 @@ class Railroads:
                             previoustimedepature.append(bording[i])
                             previoustimearrival.append(destination[i])
         else:
-            print "the avalable train to go:",'\n',bording,'\n',destination
+            print "Available train to go:",'\n',bording,'\n',destination
         return correcttimedepature,correcttimearrival,previoustimedepature,previoustimearrival
                     
     def pick_train(self,correcttimedepature,correcttimearrival,previoustimedepature,previoustimearrival):
