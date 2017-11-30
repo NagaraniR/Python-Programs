@@ -28,14 +28,14 @@ class htmlTags:
                     words=line.split(" ")
                     words=filter(None, words)
                     word=words[0]
-                    word=word[1:]
-                    groupoftags.append(word)
+                    tag=word[1:]
+                    groupoftags.append(tag)
                     for index in range(1,len(words)):
                         checkword=words[index]
                         if "=" in checkword:
                             keyvalue=checkword.split("=")
                             groupofkeys.append(keyvalue[0])
-                            groupofvalues.append(keyvalue[1])              
+                            groupofvalues.append(keyvalue[1])
                 else:
                     if "<" in line and ">" in line:
                         words=re.findall(r'[\w]+',line)
@@ -49,6 +49,10 @@ class htmlTags:
                                     keyvalue=text.split("=")
                                     groupofkeys.append(keyvalue[0])
                                     groupofvalues.append(keyvalue[1])
+                                else:
+                                    groupoftags.append(words[0])
+                    else:
+                        pass
             groupoftags=list(set(groupoftags))
             self.groupoftags=groupoftags
             self.groupofkeys=groupofkeys
