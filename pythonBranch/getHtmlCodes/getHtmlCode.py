@@ -63,7 +63,7 @@ class htmlTags:
             message = template.format(type(exception).__name__, exception.args)
         return groupoftags,groupofkeys,groupofvalues,issuccess
                  
-    def display(self):
+    def display(self,tags,keys,values):
         issuccess = True
         try:
             prompt=int(raw_input("""Enter 1.For tags,
@@ -71,28 +71,28 @@ class htmlTags:
   3.For values,
   4.For search values of corresponding key\n"""))
             if prompt==1:
-                for tag in self.groupoftags:
+                for tag in tags:
                     print tag
-                self.display()   
+                self.display(tags,keys,values)   
 
             elif prompt==2:
-                for key in self.groupofkeys:
+                for key in keys:
                     print key
-                self.display()   
+                self.display(tags,keys,values)   
             elif prompt==3:
-                if len(self.groupofkeys)==len(self.groupofvalues):
-                    for ind in range(0,len(self.groupofkeys)):
-                        print self.groupofkeys[ind],"=",self.groupofvalues[ind]
-                    self.display()
+                if len(keys)==len(values):
+                    for count in range(0,len(keys)):
+                        print keys[count],"=",values[count]
+                    self.display(tags,keys,values)
             elif prompt==4:
-                ans=raw_input("Enter key:")
-                if ans in self.groupofkeys:
-                    val=self.groupofkeys.index(ans)
-                    print self.groupofkeys[val],"=",self.groupofvalues[val]
+                inputKey=raw_input("Enter key:")
+                if inputKey in keys:
+                    resultIndex=keys.index(inputKey)
+                    print keys[resultIndex],"=",values[resultIndex]
                     
                 else:
                     print "Enter the correct key"
-                    self.display()
+                    self.display(tags,keys,values)
         except Exception as exception:
             issuccess=False 
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -107,6 +107,6 @@ if __name__=='__main__':
         if check:
             tags,keys,values,check=code.split_file(datas)
             if check:
-                code.display()
+                code.display(tags,keys,values)
 finish = datetime.datetime.now()
 print finish-start
