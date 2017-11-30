@@ -12,16 +12,16 @@ class TestHtmlTags(unittest.TestCase):
 
     def test_split_file(self):
         html=htmlTags()
-        expectedTags=["html","head","title","object","param"]
-        expectedKeys=['type', 'data', 'width', 'height', 'name', 'value']
-        expectedValues=['"application/x-flash"', '"your-file.swf"', '"0"', '"0"', '"quality"', '"high"']
+        Tags=["html","head","title","object","param"]
+        Keys=['type', 'data', 'width', 'height', 'name', 'value']
+        Values=['"application/x-flash"', '"your-file.swf"', '"0"', '"0"', '"quality"', '"high"']
         textFile=open("htmlFile.html","r").read()
         
-        actualTwo=html.split_file(textFile)
-        self.assertNotIn(expectedTags,actualTwo[0])
-        self.assertEqual(actualTwo[1],expectedKeys)
-        self.assertNotEqual(actualTwo[2],expectedValues)
-        self.assertEqual(actualTwo[3],True)
+        expected=html.split_file(textFile)
+        self.assertNotIn(expected[0],Tags)
+        self.assertEqual(expected[1],Keys)
+        self.assertNotEqual(expected[2],Values)
+        self.assertEqual(expected[3],True)
     def testDisplay(self):
         html=htmlTags()
         check=True
