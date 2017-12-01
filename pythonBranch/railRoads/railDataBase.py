@@ -1,6 +1,7 @@
 import MySQLdb as mdb
 import datetime
 
+
 con=mdb.connect(host='localhost',user='root',passwd="root",db="testdb")
 with con:
     cur=con.cursor()
@@ -12,29 +13,29 @@ with con:
     City=cur.fetchall()
     
 def boarding_description():
-    boardingDescription=[]
-    for detail in depature:
-        bordingtime =(datetime.datetime.min + detail[0]).time()
-        boardDetails=[]
-        boardDetails.append(str(bordingtime))
-        boardDetails.append(detail[1])
-        boardingDescription.append(boardDetails)
-    return boardingDescription        
+    boarding_description=[]
+    for details in depature:
+        board_time =(datetime.datetime.min + details[0]).time()
+        boarding_details=[]
+        boarding_details.append(str(board_time))
+        boarding_details.append(details[1])
+        boarding_description.append(boarding_details)   
+    return boarding_description        
 
 def arrival_description():
-    arrivalDescription=[]
-    for detail in arrival:
-        arrivaltime=(datetime.datetime.min + detail[0]).time()
-        arrivalDetails=[]
-        arrivalDetails.append(str(arrivaltime))
-        arrivalDetails.append(detail[1])
-        arrivalDescription.append(arrivalDetails)
-    return arrivalDescription
+    arrival_description=[]
+    for details in arrival:
+        arrival_time=(datetime.datetime.min + details[0]).time()
+        arrival_details=[]
+        arrival_details.append(str(arrival_time))
+        arrival_details.append(details[1])
+        arrival_description.append(arrival_details)   
+    return arrival_description
             
 def Cities():
     Cities=[]
     for city in City:
-        Cities.append(city[0])  
+        Cities.append(city[0])    
     return Cities
 
 boarding_description()
