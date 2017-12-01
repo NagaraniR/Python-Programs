@@ -15,11 +15,19 @@ class htmlTags:
             print "The existing file is not txt or html"
             issuccess=False   
         return datas,issuccess
-    
-    def split_file(self,datas):
+    def remove_comment_line(self,datas):
         issuccess = True
         try:
             htmlText=re.sub(r'<!.+-->',"",datas)
+        except Exception as exception:
+            issuccess=False 
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(exception).__name__, exception.args)
+        return issuccess,htmlText
+    
+    def split_file(self,htmlText):
+        issuccess = True
+        try:
             groupoftags=[]
             groupofkeys=[]
             groupofvalues=[]
@@ -35,7 +43,10 @@ class htmlTags:
                         if "=" in checkword:
                             keyvalue=checkword.split("=")
                             groupofkeys.append(keyvalue[0])
-                            groupofvalues.append(keyvalue[1])
+                            value = keyvalue[1].translate(None, '/">"')
+                            groupofvalues.append(value)
+                        else:
+                            pass
                 else:
                     if "<" in line and ">" in line:
                         words=re.findall(r'[\w]+',line)
@@ -48,15 +59,13 @@ class htmlTags:
                                     word=words[index]
                                     keyvalue=text.split("=")
                                     groupofkeys.append(keyvalue[0])
-                                    groupofvalues.append(keyvalue[1])
+                                    value = keyvalue[1].translate(None, '/">"')
+                                    groupofvalues.append(value[1])
                                 else:
                                     groupoftags.append(words[0])
                     else:
                         pass
             groupoftags=list(set(groupoftags))
-            self.groupoftags=groupoftags
-            self.groupofkeys=groupofkeys
-            self.groupofvalues=groupofvalues
         except Exception as exception:
             issuccess=False 
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -89,7 +98,6 @@ class htmlTags:
                 if inputKey in keys:
                     resultIndex=keys.index(inputKey)
                     print keys[resultIndex],"=",values[resultIndex]
-                    
                 else:
                     print "Enter the correct key"
                     self.display(tags,keys,values)
@@ -105,8 +113,10 @@ if __name__=='__main__':
         code=htmlTags()
         datas,check=code.check_file(sys.argv[1])
         if check:
-            tags,keys,values,check=code.split_file(datas)
+            check,htmlText=code.remove_comment_line(datas)
             if check:
-                code.display(tags,keys,values)
+                tags,keys,values,check=code.split_file(htmlText)
+                if check:
+                    code.display(tags,keys,values)
 finish = datetime.datetime.now()
 print finish-start
