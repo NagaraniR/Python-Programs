@@ -10,9 +10,8 @@ class htmlTags:
         if htmlCodes.endswith('.html'):
             txt=open(htmlCodes,'r')
             datas=txt.read()
-            self.text=datas
         else:
-            print "The existing file is not txt or html"
+            print "The existing file is not html file"
             issuccess=False   
         return datas,issuccess
     def remove_comment_line(self,datas):
