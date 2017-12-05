@@ -1,73 +1,79 @@
-import railDataBase
+from railDataBase import DbConnection
 
 
 class Railroads:
 
     def database_values(self):
-        bording_details=railDataBase.boarding_description()
-        arrival_details=railDataBase.arrival_description()
-        cities=railDataBase.Cities()
+        connection=DbConnection()
+        bording_details=connection.boarding_description()
+        arrival_details=connection.arrival_description()
+        cities=connection.Cities()
         return bording_details,arrival_details,cities
 
-    def getPointToPoint(self,bording_details,arrival_details,arrival_time,boarding_point,arrival_point):
-        boardingStations=[]
-        arrivalStations=[]
-        jumpBoardings=[]
-        jumpDestinations=[]
+    def input_passenger_details(self):
+        passenger_details={"arrival_time":"08:30:00","boarding_point":"kodambakkam","arrival_point":"mount"}
+        return passenger_details
+
+    def getPointToPoint(self,bording_details,arrival_details,passenger_details):
+        boarding_stations=[]
+        arrival_stations=[]
+        jump_boardings=[]
+        jump_destinations=[]
         index=0
         for i in range(0,len(bording_details)):
-            if bording_details[i][index+1]==boarding_point:
-                if arrival_details[i][index+1]==arrival_point:
-                    if arrival_details[i][index]<=arrival_time:
-                        boardingStations.append(bording_details[i])
-                        arrivalStations.append(arrival_details[i])
+            if bording_details[i][index+1]==passenger_details["boarding_point"]:
+                if arrival_details[i][index+1]==passenger_details["arrival_point"]:
+                    if arrival_details[i][index]<=passenger_details["arrival_time"]:
+                        boarding_stations.append(bording_details[i])
+                        arrival_stations.append(arrival_details[i])
                         
                 else:
-                    jumpBoardings.append(bording_details[i])
-                    jumpDestinations.append(arrival_details[i])
+                    jump_boardings.append(bording_details[i])
+                    jump_destinations.append(arrival_details[i])
             else:
-                jumpBoardings.append(bording_details[i])
-                jumpDestinations.append(arrival_details[i])
-        return boardingStations,arrivalStations,jumpBoardings,jumpDestinations
+                jump_boardings.append(bording_details[i])
+                jump_destinations.append(arrival_details[i])
+        return boarding_stations,arrival_stations,jump_boardings,jump_destinations
         
-    def get_jump_train(self,jumpBoardings,jumpDestinations,arrivaltime,boardingpoint,arrivalpoint,cities):
+    def jump_train(self,jump_boardings,jump_destinations,passenger_details,cities):
         jump_boardStations=[]
         jump_endStations=[]
-        index=0
-        for i in range(0,len(jumpBoardings)):
-            if jumpBoardings[i][index+1]==boardingpoint:
-                if jumpDestinations[i][index+1] in cities:
-                    if jumpDestinations[i][index]<arrivaltime:
-                        for j in range(0,len(jumpBoardings)):
-                            if jumpDestinations[i][index+1]==jumpBoardings[j][index+1]:
-                                if jumpBoardings[j][index]>=jumpDestinations[i][index] and jumpBoardings[j][index]<arrivaltime:
-                                    if jumpDestinations[j][index+1]==arrivalpoint:
-                                        if jumpDestinations[j][index]<=arrivaltime:
-                                            jump_boardStations.append(jumpBoardings[i])
-                                            jump_endStations.append(jumpDestinations[j])
-            else:
-                pass
-        return  jump_boardStations, jump_endStations
-    
-    def input_arrival_time(self):
-        arrival_time=raw_input("Correct time to arrival:")
-        return arrival_time
-    
-    def input_boarding_point(self):
-        boarding_point=raw_input("Enter boarding point:")
-        return boarding_point
-    
-    def input_arrival_point(self):
-        arrival_point=raw_input("Enter arrival point:")
-        return arrival_point
+        count=0
+        for i in range(0,len(jump_boardings)):
+            if jump_boardings[i][count+1]==passenger_details["boarding_point"]:
+                if jump_destinations[i][count+1] in cities:
+                    if jump_destinations[i][count]<passenger_details["arrival_time"]:
+                        jump_boardStations.append(jump_boardings[i])
+                        jump_endStations.append(jump_destinations[i])
+                    else:
+                        pass
+        return jump_boardStations,jump_endStations
+    def get_jump_train(self,jump_boardings,jump_destinations,jump_boardStations,jump_endStations,passenger_details):
+        jump_board_stations=[]
+        jump_end_stations=[]
+        count=0
+        success="Error"
+        for i in range(0,len(jump_endStations)):
+            for j in range(0,len(jump_boardings)):
+                if jump_boardings[j][count+1]==jump_endStations[i][count+1]:
+                    if jump_boardings[j][count]>=jump_endStations[i][count] and jump_boardings[j][count]<passenger_details["arrival_time"]:
+                        if jump_destinations[j][count+1]==passenger_details["arrival_point"]:
+                            if jump_destinations[j][count]<=passenger_details["arrival_time"]:
+                                jump_board_stations.append(jump_boardStations[i])
+                                jump_end_stations.append(jump_destinations[j])
 
-    def split_availabletrain(self,boardingStations,arrivalStations,boardstations, endstations,arrivaltime):
+                            else:
+                                if len(jump_board_stations)==0: 
+                                    print  success
+        return  jump_board_stations, jump_end_stations
+
+    def split_availabletrain(self,boarding_stations,arrival_stations,jump_board_stations, jump_end_stations,passenger_details):
         correct_time_depature=[]
         correct_time_arrival=[]
         previous_time_depature=[]
         previous_time_arrival=[]
-        bording=boardingStations+boardstations
-        destination=arrivalStations+endstations
+        bording=boarding_stations+jump_board_stations
+        destination=arrival_stations+jump_end_stations
         count=0
         if len(destination)>1:
             Time=[time[0]for time in destination]
@@ -83,7 +89,7 @@ class Railroads:
                         secondmax=Time[i]
                         break
             for i in range(0,len(destination)):
-                if destination[i][count]==arrivaltime:
+                if destination[i][count]==passenger_details["arrival_time"]:
                     correct_time_depature.append(bording[i])
                     correct_time_arrival.append(destination[i])
                 else:
@@ -91,7 +97,7 @@ class Railroads:
                         previous_time_depature.append(bording[i])
                         previous_time_arrival.append(destination[i])
         elif len(bording) == 1:
-            if destination[0][0]==arrivaltime:
+            if destination[0][0]==passenger_details["arrival_time"]:
                 correct_time_depature.append(bording)
                 correct_time_arrival.append(destination)
             else:
@@ -128,11 +134,11 @@ class Railroads:
 
 if __name__ == "__main__":
     details=Railroads()
-    arrival_time=details.input_arrival_time()
-    boarding_point=details.input_boarding_point()
-    arrival_point=details.input_arrival_point()
+    passenger_details=details.input_passenger_details()
     bordingDetails,arrivalDetails,cities=details.database_values()
-    boardingStations,arrivalStations,jumpBoardings,jumpDestinations=details.getPointToPoint(bordingDetails,arrivalDetails,arrival_time,boarding_point,arrival_point)
-    board_stations, end_stations=details.get_jump_train(jumpBoardings,jumpDestinations,arrival_time,boarding_point,arrival_point,cities)
-    correct_time_depature,correct_time_arrival,previous_time_depature,previous_time_arrival=details.split_availabletrain(boardingStations,arrivalStations,board_stations, end_stations,arrival_time)
+    boardingStations,arrivalStations,jump_boardings,jump_destinations=details.getPointToPoint(bordingDetails,arrivalDetails,passenger_details)
+    board_stations, end_stations=details.jump_train(jump_boardings,jump_destinations,passenger_details,cities)
+    jump_board_stations,jump_end_stations=details.get_jump_train(jump_boardings,jump_destinations,board_stations,end_stations,passenger_details)
+    correct_time_depature,correct_time_arrival,previous_time_depature,previous_time_arrival=details.split_availabletrain(boardingStations,arrivalStations,jump_board_stations, jump_end_stations,passenger_details)
     details.pick_train(correct_time_depature,correct_time_arrival,previous_time_depature,previous_time_arrival)
+
