@@ -6,7 +6,7 @@ class DbConnection:
     def get_train(self,arrival_time,board_station,arrival_station):
         con=mdb.connect(host='localhost',user='root',passwd="root",db="nagarani")
         cursor=con.cursor()
-        result="select * from TrainDetails where DepatureStation='{board_station}' and ArrivalStation='{arrival_station}' and ArrivalTime='{arrival_time}'".format(board_station=board_station,arrival_station=arrival_station,arrival_time=arrival_time)
+        result="select max(DepatureTime),DepatureStation,ArrivalTime,ArrivalStation from TrainDetails where DepatureStation='{board_station}' and ArrivalStation='{arrival_station}' and ArrivalTime='{arrival_time}'".format(board_station=board_station,arrival_station=arrival_station,arrival_time=arrival_time)
         cursor.execute(result)
         data=cursor.fetchall()
         con.close()
@@ -26,4 +26,7 @@ class DbConnection:
 connection=DbConnection()
 data=connection.get_train("08:30:00","kodambakkam","mount")
 connection.display(data)
+
+
+
    
