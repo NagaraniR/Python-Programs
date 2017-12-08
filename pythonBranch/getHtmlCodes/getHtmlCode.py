@@ -22,6 +22,7 @@ class htmlTags:
             issuccess=False 
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
             message = template.format(type(exception).__name__, exception.args)
+            print message
         return issuccess,htmlText
     
     def split_file(self,htmlText):
@@ -69,41 +70,42 @@ class htmlTags:
             issuccess=False 
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
             message = template.format(type(exception).__name__, exception.args)
+            print message
         return groupoftags,groupofkeys,groupofvalues,issuccess
                  
     def display(self,tags,keys,values):
         issuccess = True
         try:
-            prompt=int(raw_input("""Enter 1.For tags,
-  2.For keys,
-  3.For values,
-  4.For search values of corresponding key\n"""))
-            if prompt==1:
-                for tag in tags:
-                    print tag
-                self.display(tags,keys,values)   
+            prompt=1
+            while prompt<=4:
+                if prompt==1:
+                    print "Tags in html file:"
+                    for tag in tags:
+                        print tag  
 
-            elif prompt==2:
-                for key in keys:
-                    print key
-                self.display(tags,keys,values)   
-            elif prompt==3:
-                if len(keys)==len(values):
-                    for count in range(0,len(keys)):
-                        print keys[count],"=",values[count]
-                    self.display(tags,keys,values)
-            elif prompt==4:
-                inputKey=raw_input("Enter key:")
-                if inputKey in keys:
-                    resultIndex=keys.index(inputKey)
-                    print keys[resultIndex],"=",values[resultIndex]
+                elif prompt==2:
+                    print "Keys in html file:"
+                    for key in keys:
+                        print key   
+                elif prompt==3:
+                    if len(keys)==len(values):
+                        print "Values with corressponding key:"
+                        for count in range(0,len(keys)):
+                            print keys[count],"=",values[count]
                 else:
-                    print "Enter the correct key"
-                    self.display(tags,keys,values)
+                    if prompt==4:
+                        inputKey=raw_input("Enter key:")
+                        if inputKey in keys:
+                            resultIndex=keys.index(inputKey)
+                            print keys[resultIndex],"=",values[resultIndex]
+                        else:
+                            print "Enter the correct key to know the value:"
+                prompt+=1            
         except Exception as exception:
             issuccess=False 
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
             message = template.format(type(exception).__name__, exception.args)
+            print message
         return issuccess
         
 start = datetime.datetime.now()    
